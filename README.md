@@ -1,3 +1,2 @@
-# JKPhotoDemo
-仿即刻App列表图片转场切换效果Demo
+# 仿即刻图片切换效果Demo
 ![image](demo.gif)
