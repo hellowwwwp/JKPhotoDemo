@@ -71,6 +71,10 @@ public class MainListAdapter extends BaseQuickAdapter<ListItemModel, BaseViewHol
             ImageView imageView = (ImageView) holder.getView(R.id.image_view);
             imageView.setImageResource(item.resId);
             imageView.setTag(item.name);
+            //备用
+            ImageView standbyImageView = (ImageView) holder.getView(R.id.standby_image_view);
+            standbyImageView.setImageResource(item.resId);
+            standbyImageView.setVisibility(View.GONE);
         }
     }
 

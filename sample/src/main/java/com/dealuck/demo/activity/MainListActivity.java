@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.dealuck.demo.R;
@@ -64,22 +65,44 @@ public class MainListActivity extends AppCompatActivity implements MainListAdapt
                         if (childViewHolder != null) {
                             View childItemView = childViewHolder.itemView;
                             View imageView = childItemView.findViewById(R.id.image_view);
+                            imageView.setVisibility(View.VISIBLE);
                             String name = (String) imageView.getTag();
                             names.clear();
                             sharedElements.clear();
                             names.add(name);
                             sharedElements.put(name, imageView);
+                            //显示备用ImageView
+                            View standbyImageView = childItemView.findViewById(R.id.standby_image_view);
+                            if (standbyImageView.getVisibility() != View.VISIBLE) {
+                                standbyImageView.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                     mExitPosition = -1;
                     mExitIndex = -1;
                 }
             }
+
+            @Override
+            public void onSharedElementEnd(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+                super.onSharedElementEnd(sharedElementNames, sharedElements, sharedElementSnapshots);
+                //隐藏备用ImageView
+                ViewGroup childItemView = (ViewGroup) sharedElements.get(0).getParent();
+                View standbyImageView = childItemView.findViewById(R.id.standby_image_view);
+                standbyImageView.setVisibility(View.GONE);
+            }
         });
     }
 
     @Override
     public void onItemImageClick(BaseViewHolder viewHolder, View imageView, int itemPosition, int imageIndex) {
+        //让备用ImageView显示
+        ViewGroup childItemView = (ViewGroup) imageView.getParent();
+        if (childItemView != null) {
+            View standbyImageView = childItemView.findViewById(R.id.standby_image_view);
+            standbyImageView.setVisibility(View.VISIBLE);
+        }
+
         ListItemModel model = mAdapter.getData().get(itemPosition);
         Intent intent = new Intent(this, PhotoDetailActivity.class);
         intent.putExtra("model", model);
@@ -128,4 +151,5 @@ public class MainListActivity extends AppCompatActivity implements MainListAdapt
         list.add(new ImageModel(R.drawable.wz10, position + "_image_10"));
         return list;
     }
+
 }
